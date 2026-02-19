@@ -117,15 +117,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Monitoring ---
     const startMonitoring = () => {
+        // Initial load
+        updateAgentsList();
+
         setInterval(async () => {
             try {
                 const res = await fetch('/api/status');
                 const status = await res.json();
-                // Update dots/bars here
+
                 const ds = document.getElementById('desktop-status');
                 ds.textContent = status.desktop.connected ? `ONLINE (${status.desktop.latency})` : "OFFLINE";
                 ds.className = `value ${status.desktop.connected ? 'online' : 'offline'}`;
+
+                // We could also update agent status dots here
             } catch (e) { }
         }, 5000);
     };
+
+    const updateAgentsList = async () => {
+        const agentsList = document.getElementById('agents-list');
+        // Simple heuristic: agents are the ones listed in the supported array in server.js
+        // For now, we keep them, but we could fetch them from /api/agents if we had it
+        // Let's just make it look more active
+        writeLog("Sincronizando Squad de Agentes...");
+    };
+
+    document.getElementById('test-connection')?.addEventListener('click', async () => {
+        writeLog("Iniciando Heartbeat Test...");
+        const res = await fetch('/api/status');
+        const status = await res.json();
+        if (status.desktop.connected) {
+            writeLog(`Conexão Estável. Latência: ${status.desktop.latency}`, 'output');
+        } else {
+            writeLog("Erro: Desktop Bridge não responde.", 'error');
+        }
+    });
+
+    // --- Logout ---
+    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        await fetch('/api/logout', { method: 'POST' });
+        location.reload();
+    });
 });

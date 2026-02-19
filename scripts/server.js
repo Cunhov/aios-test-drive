@@ -139,9 +139,74 @@ app.post('/api/command', authRequired, (req, res) => {
     });
 });
 
-// --- Webhook ---
+// --- Helper: Send WhatsApp Message ---
+async function sendWhatsApp(remoteJid, text) {
+    const url = `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE || 'aios'}`;
+    const headers = {
+        'apikey': process.env.EVOLUTION_API_KEY,
+        'Content-Type': 'application/json'
+    };
+    try {
+        await axios.post(url, {
+            number: remoteJid,
+            text: text,
+            delay: 1200,
+            linkPreview: true
+        }, { headers });
+        console.log(`[WhatsApp] Resposta enviada para ${remoteJid}`);
+    } catch (e) {
+        console.error(`[WhatsApp] Erro ao enviar mensagem: ${e.message}`);
+    }
+}
+
+// --- Webhook: Evolution API ---
 app.post('/webhook', async (req, res) => {
-    // Basic webhook handling for Evolution API
+    const data = req.body;
+
+    // We only care about messages upsert
+    if (data.event !== 'messages.upsert') return res.sendStatus(200);
+
+    const message = data.data;
+    const remoteJid = message.key.remoteJid;
+    const fromMe = message.key.fromMe;
+    const pushName = message.pushName || 'Usuário';
+
+    if (fromMe) return res.sendStatus(200); // Don't reply to self
+
+    let inputText = '';
+    const messageType = message.messageType;
+
+    if (messageType === 'conversation') {
+        inputText = message.message.conversation;
+    } else if (messageType === 'extendedTextMessage') {
+        inputText = message.message.extendedTextMessage.text;
+    } else if (messageType === 'audioMessage') {
+        // Handle Audio - Simplified for now: Log and notify
+        // In a real scenario, download from Evolution API and transcribe
+        inputText = "[Transcrição de Áudio Placeholder: O usuário enviou um áudio]";
+        console.log(`[WhatsApp] Áudio recebido de ${pushName}. Transcrição pendente.`);
+    }
+
+    if (!inputText) return res.sendStatus(200);
+
+    console.log(`[WhatsApp] Recebido de ${pushName}: ${inputText}`);
+
+    // Route to Agent (Default to @secretary if no handle)
+    let agentHandle = 'secretary';
+    let cleanInput = inputText;
+
+    const match = inputText.match(/^@([a-zA-Z0-9_]+)\s+(.*)/);
+    if (match) {
+        agentHandle = match[1];
+        cleanInput = match[2];
+    }
+
+    // Execute via Headless Runner
+    exec(`node scripts/headless-runner.js ${agentHandle} "${cleanInput.replace(/"/g, '\\"')}"`, async (err, stdout) => {
+        const response = err ? `⚠️ Erro: ${err.message}` : stdout.trim();
+        await sendWhatsApp(remoteJid, response);
+    });
+
     res.sendStatus(200);
 });
 
