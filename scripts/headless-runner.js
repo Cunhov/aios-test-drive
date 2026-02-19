@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const yaml = require('js-yaml');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -87,8 +88,8 @@ async function callLLM(system, user) {
         const response = await result.response;
         return response.text();
     } catch (error) {
-        console.error("LLM Error:", error.message);
-        return "Erro ao processar com a IA (Gemini).";
+        console.error("LLM Error:", error);
+        return `⚠️ Erro na IA: ${error.message || "Erro desconhecido"}`;
     }
 }
 
