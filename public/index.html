@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIOS | THE GRID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-theme">
+    <div id="login-screen" class="overlay active">
+        <div class="glass-card login-box">
+            <h1>AIOS <span>COMMAND</span></h1>
+            <p>Acesso Restrito ao Daniel Cunha</p>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="E-mail" required>
+                <input type="password" id="pass" placeholder="Senha" required>
+                <button type="submit" class="primary-btn">INICIAR SISTEMA</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden">
+        <header>
+            <div class="logo">AIOS <span>THE GRID</span></div>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-tab="terminal">TERMINAL</button>
+                <button class="nav-btn" data-tab="mcp">MCP SERVICES</button>
+                <button class="nav-btn" data-tab="desktop">DESKTOP LINK</button>
+                <button class="nav-btn" data-tab="context">CONTEXT AI</button>
+            </nav>
+            <div class="user-info">
+                <span id="user-display">Daniel Cunha</span>
+                <button id="logout-btn">SAIR</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- TAB: TERMINAL -->
+            <section id="tab-terminal" class="tab-content active">
+                <div class="grid-layout">
+                    <div class="sidebar">
+                        <div class="status-card glass-card">
+                            <h3>SYSTEM STATUS</h3>
+                            <div class="status-item"><span class="label">VPS CPU</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 15%"></div>
+                                </div>
+                            </div>
+                            <div class="status-item"><span class="label">VPS RAM</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 24%"></div>
+                                </div>
+                            </div>
+                            <div class="status-item"><span class="label">DESKTOP</span> <span class="value offline"
+                                    id="desktop-status">OFFLINE</span></div>
+                        </div>
+                        <div class="agents-card glass-card">
+                            <h3>ACTIVE AGENTS</h3>
+                            <ul id="agents-list">
+                                <li class="online">@secretary</li>
+                                <li class="online">@content_director</li>
+                                <li class="online">@video_editor</li>
+                                <li class="online">@project_manager</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="main-panel">
+                        <div class="console-box glass-card">
+                            <div class="console-header">LIVE STREAM / LOGS</div>
+                            <div id="logs" class="console-output"></div>
+                            <div class="console-input">
+                                <span class="prompt">></span>
+                                <input type="text" id="command-input" placeholder="Digite @agente comando...">
+                                <button id="send-cmd">EXECUTAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: MCP -->
+            <section id="tab-mcp" class="tab-content">
+                <div class="mcp-grid">
+                    <div class="mcp-card glass-card">
+                        <div class="mcp-icon">N</div>
+                        <h3>NOTION</h3>
+                        <p>Gestão de Documentação e Brainstorming</p>
+                        <input type="password" class="env-input" data-key="NOTION_TOKEN" placeholder="API Token">
+                        <button class="save-env-btn">LINK NOTION</button>
+                    </div>
+                    <div class="mcp-card glass-card">
+                        <div class="mcp-icon">C</div>
+                        <h3>CLICKUP</h3>
+                        <p>Controle de Equipe e Tarefas Operacionais</p>
+                        <input type="password" class="env-input" data-key="CLICKUP_TOKEN" placeholder="API Token">
+                        <button class="save-env-btn">LINK CLICKUP</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: DESKTOP -->
+            <section id="tab-desktop" class="tab-content">
+                <div class="desktop-panel glass-card">
+                    <div class="connection-viz">
+                        <div class="node vps">VPS</div>
+                        <div class="tunnel-line"></div>
+                        <div class="node pc">CUNHA-PC</div>
+                    </div>
+                    <h2>REVERSE COMMAND BRIDGE</h2>
+                    <p>Permite que a VPS envie ordens de processamento local (Vídeo/Scripts).</p>
+                    <div class="control-row">
+                        <input type="text" class="env-input" data-key="DESKTOP_BRIDGE_URL"
+                            placeholder="Cloudflare Tunnel URL (ex: https://pc-link.trycloudflare.com)">
+                        <button class="save-env-btn">SAVE ENDPOINT</button>
+                    </div>
+                    <button id="test-connection" class="secondary-btn">RUN HEARTBEAT TEST</button>
+                </div>
+            </section>
+
+            <!-- TAB: CONTEXT -->
+            <section id="tab-context" class="tab-content">
+                <div class="editor-container glass-card">
+                    <header>
+                        <h3>CONTEXTO_NEGOCIO.MD</h3>
+                        <button id="save-context" class="primary-btn">SALVAR MEMÓRIA</button>
+                    </header>
+                    <textarea id="context-editor" spellcheck="false"></textarea>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

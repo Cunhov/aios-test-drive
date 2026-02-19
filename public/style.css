@@ -1,0 +1,330 @@
+:root {
+    --bg: #030410;
+    --card: rgba(13, 17, 34, 0.8);
+    --border: rgba(255, 255, 255, 0.08);
+    --primary: #4f46e5;
+    --accent: #818cf8;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --success: #10b981;
+    --error: #ef4444;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* Glassmorphism Generic */
+.glass-card {
+    background: var(--card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Overlay & Login */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1e1b4b 0%, #030410 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.login-box {
+    padding: 3rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1 {
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+
+.login-box h1 span {
+    color: var(--primary);
+}
+
+.login-box p {
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+}
+
+input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.primary-btn:hover {
+    transform: scale(1.02);
+}
+
+/* Header & Nav */
+header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(3, 4, 16, 0.9);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.main-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-btn.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+/* Main Content */
+main {
+    margin-top: 70px;
+    padding: 2rem;
+    height: calc(100vh - 70px);
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Grid Layout (Terminal Tab) */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.status-card,
+.agents-card {
+    padding: 1.5rem;
+}
+
+h3 {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+}
+
+.status-item {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+.bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+}
+
+.fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+li {
+    list-style: none;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+li.online::before {
+    content: '●';
+    color: var(--success);
+    margin-right: 0.8rem;
+}
+
+/* Console Box */
+.main-panel {
+    height: 100%;
+}
+
+.console-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.console-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.console-output {
+    flex: 1;
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    color: #a5b4fc;
+}
+
+.console-input {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.prompt {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+#command-input {
+    margin: 0;
+    border: none;
+    background: none;
+    flex: 1;
+}
+
+#send-cmd {
+    background: var(--primary);
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* MCP Grid */
+.mcp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.mcp-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.mcp-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+/* Editor */
+.editor-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-container header {
+    position: static;
+    background: none;
+    border-bottom: 1px solid var(--border);
+}
+
+textarea {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #fff;
+    padding: 2rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    resize: none;
+}
