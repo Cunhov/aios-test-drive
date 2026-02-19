@@ -69,7 +69,11 @@ async function callLLM(system, user) {
 
     try {
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-3.0-flash" });
+        // Using v1beta for the latest Gemini 3.0 models as they roll out
+        const model = genAI.getGenerativeModel({
+            model: "gemini-3-flash-preview",
+            apiVersion: "v1beta"
+        });
 
         const chat = model.startChat({
             history: [
