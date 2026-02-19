@@ -138,8 +138,14 @@ app.post('/api/command', authRequired, (req, res) => {
         return res.json({ result: `Agente @${agent} não suportado.` });
     }
 
-    exec(`node scripts/headless-runner.js ${agent} "${input.replace(/"/g, '\\"')}"`, (err, stdout) => {
-        res.json({ result: err ? `Erro: ${err.message}` : stdout.trim() });
+    console.log(`[Dashboard] Executando: @${agent} -> ${input}`);
+    exec(`node scripts/headless-runner.js ${agent} "${input.replace(/"/g, '\\"')}"`, (err, stdout, stderr) => {
+        if (err) console.error(`[Dashboard] Erro exec: ${err.message}`);
+        if (stderr) console.warn(`[Dashboard] Stderr: ${stderr}`);
+
+        const output = stdout ? stdout.trim() : "";
+        console.log(`[Dashboard] Output do Agente: ${output}`);
+        res.json({ result: err ? `Erro: ${err.message}` : output || "Agente não retornou resposta." });
     });
 });
 
