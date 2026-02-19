@@ -2,6 +2,9 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const express = require('express');
+const { exec } = require('child_process');
+const bodyParser = require('body-parser');
+const axios = require('axios');
 const session = require('express-session');
 
 const app = express();
