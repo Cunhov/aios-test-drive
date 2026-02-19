@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (res.ok) {
-            loginScreen.classList.remove('active');
+            loginScreen.classList.add('hidden'); // Use hidden to ensure display: none
             appContainer.classList.remove('hidden');
             writeLog("Painel AIOS v3 Autenticado. Bem-vindo, Daniel.");
             startMonitoring();

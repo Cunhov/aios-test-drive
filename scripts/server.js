@@ -1,10 +1,7 @@
-require('dotenv').config();
-const express = require('express');
-const { exec } = require('child_process');
-const bodyParser = require('body-parser');
-const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+const express = require('express');
 const session = require('express-session');
 
 const app = express();
@@ -30,10 +27,14 @@ const authRequired = (req, res, next) => {
 // --- API: Auth ---
 app.post('/api/login', (req, res) => {
     const { email, pass } = req.body;
+    console.log(`[Dashboard] Tentativa de login: ${email}`);
+
     if (email === process.env.DASHBOARD_USER && pass === process.env.DASHBOARD_PASS) {
         req.session.authenticated = true;
+        console.log(`[Dashboard] Login bem-sucedido para: ${email}`);
         res.json({ success: true });
     } else {
+        console.warn(`[Dashboard] Falha no login para: ${email}. Esperado: ${process.env.DASHBOARD_USER}`);
         res.status(401).json({ error: 'Credenciais inválidas' });
     }
 });
